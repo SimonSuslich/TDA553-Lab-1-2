@@ -66,9 +66,11 @@ public class Car implements Movable {
     }
 
     public void incrementSpeed(double amount){
+        currentSpeed = getCurrentSpeed() + speedFactor() * amount;
     }
 
     public void decrementSpeed(double amount){
+        currentSpeed = getCurrentSpeed() - speedFactor() * amount;
     }
     // TODO fix this method according to lab pm
     public void gas(double amount){

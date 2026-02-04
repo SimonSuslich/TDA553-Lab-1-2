@@ -54,4 +54,41 @@ class CarTest {
         double v = volvo240.getCurrentSpeed();
         assertTrue(v >= 0);
     }
+
+    private Scania scania = new Scania();
+
+    @org.junit.jupiter.api.Test
+    void flakAngleNotOver70() {
+        scania.changeFlakAngle(71);
+        assertEquals(70, scania.getFlakAngle());
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void flakAngleNotNegative() {
+        scania.changeFlakAngle(-10);
+        assertEquals(0, scania.getFlakAngle());
+    }
+
+    @org.junit.jupiter.api.Test
+    void flakAngleChange() {
+        scania.changeFlakAngle(40);
+        assertEquals(40, scania.getFlakAngle());
+    }
+
+    @org.junit.jupiter.api.Test
+    void notDrivingFlakAngleOver0() {
+        scania.changeFlakAngle(70);
+        double v0 = scania.getCurrentSpeed();
+        scania.incrementSpeed(1);
+        double v1 = scania.getCurrentSpeed();
+        assertEquals(v0, v1);
+    }
+
+    @org.junit.jupiter.api.Test
+    void notStartingEngineFlakAngle() {
+        scania.changeFlakAngle(10);
+        scania.startEngine();
+        assertEquals(0, scania.getCurrentSpeed());
+    }
 }

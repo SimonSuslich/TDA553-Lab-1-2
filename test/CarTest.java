@@ -110,8 +110,9 @@ class CarTest {
 
     @Test
     void loadsOnlyMaxCapacity() {
-        ArrayList<Car> cars = null;
+        ArrayList<Car> cars = new ArrayList<Car>();
         for (int i = 0; i < 4; i++) cars.add(new Car());
+        biltransport.openOrCloseRamp();
         for (Car car: cars) biltransport.loadCar(car);
         assertEquals(3, biltransport.getCarsStorage().size());
     }
@@ -121,6 +122,7 @@ class CarTest {
     void cannotLoadBiltransport() {
         Biltransport bt1 = new Biltransport(1);
         Biltransport bt2 = new Biltransport(1);
+        bt1.openOrCloseRamp();
         bt1.loadCar(bt2);
         assertEquals(0, bt1.getCarsStorage().size());
     }
@@ -128,19 +130,20 @@ class CarTest {
 
     @Test
     void notFlakWithNegativeCars() {
+        biltransport.openOrCloseRamp();
         biltransport.offLoadCar();
         assertEquals(0, biltransport.getCarsStorage().size());
     }
 
     @Test
     void offLoadCars() {
+        biltransport.openOrCloseRamp();
         for (int i=0; i<2; i++) biltransport.loadCar(new Volvo240());
         Volvo240 car3 = new Volvo240();
         biltransport.loadCar(car3);
-
         int amountOfCars = biltransport.getCarsStorage().size();
-        biltransport.openOrCloseRamp();
         biltransport.offLoadCar();
+
         assertEquals(amountOfCars - 1, biltransport.getCarsStorage().size());
         assertFalse(biltransport.getCarsStorage().contains(car3));
     }

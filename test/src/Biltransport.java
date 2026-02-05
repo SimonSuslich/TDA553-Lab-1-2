@@ -4,7 +4,7 @@ import java.awt.Point;
 public class Biltransport extends Car {
 
     private boolean rampOpened;
-    private ArrayList<Car> carsStorage;
+    private ArrayList<Car> carsStorage = new ArrayList<Car>();
     private final int flakCapacity;
 
     public Biltransport(int flakCapacity) {
@@ -36,7 +36,7 @@ public class Biltransport extends Car {
         }
     }
 
-    public void offLoadCar() {
+    public Car offLoadCar() {
         //Checks if ramp is down
         if (rampOpened) {
             if (!carsStorage.isEmpty()) {
@@ -44,8 +44,10 @@ public class Biltransport extends Car {
                 carsStorage.removeLast();
                 car.xCoord = this.xCoord + 5;
                 car.yCoord = this.yCoord;
+                return car;
             }
         }
+        return null;
     }
 
     @Override

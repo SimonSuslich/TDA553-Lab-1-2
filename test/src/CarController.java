@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -45,11 +46,21 @@ public class CarController {
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
            for (Car car : cars) {
-                car.move();
                 int x = (int) Math.round(car.getxCoord());
                 int y = (int) Math.round(car.getyCoord());
-                System.out.println(x + "," + y);
-                frame.drawPanel.moveit(x, y);
+                if (!checkHitWall(car)) {
+                    car.move();
+                    x = (int) Math.round(car.getxCoord());
+                    y = (int) Math.round(car.getyCoord());
+                    System.out.println("Yo");
+                    frame.drawPanel.moveit(x, y);
+               } else {
+                    car.setCurrentSpeed(0);
+                    System.out.println("No");
+                }
+                System.out.println("Coords: "+x + "," + y);
+                System.out.println("Speed: "+car.getCurrentSpeed());
+
                 // repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
             }
@@ -105,5 +116,36 @@ public class CarController {
         for (Car car: cars) {
             car.stopEngine();
         }
+    }
+
+    boolean checkHitWall(Car car) {
+        int carWidth = frame.drawPanel.volvoImage.getWidth();
+        int carHeight = frame.drawPanel.volvoImage.getHeight();
+        Dimension windowSize = frame.drawPanel.getSize();
+
+
+        if (windowSize.height < car.getyCoord()+carHeight) {
+            System.out.println(windowSize.height + "--- " + car.getyCoord() + carHeight + " Y coord over window");
+            return true;
+        }
+
+        if (windowSize.width < car.getxCoord()+carWidth) {
+            System.out.println(windowSize.width + "--- " + car.getxCoord() + carWidth + " X coord over window");
+            return true;
+        }
+
+        if (0 > car.getyCoord()) {
+            System.out.println(0 + "--- " + car.getyCoord() + " x Coord lower than 0");
+            return true;
+        }
+        if (0 > car.getxCoord()) {
+            System.out.println(0 + "--- " + car.getxCoord() + " y coord lower than 0");
+            return true;
+        }
+        return false;
+    }
+//Chech hit wall fast för autoshop
+    void atAutoShop(Car car){
+        //int autoShopWidth =
     }
 }

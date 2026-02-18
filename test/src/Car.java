@@ -10,9 +10,9 @@ public class Car implements Movable {
     protected Color color; // Color of the car
     protected String modelName; // The car model name
 
-    protected double xCoord = 0.0; // Car x coordinate
-    protected double yCoord = 0.0; // Car y coordinate
-    protected int carAngle = 0; // Car angle in degrees
+    protected double xCoord = 0; // Car x coordinate
+    protected double yCoord = 0; // Car y coordinate
+    protected int carAngle = 90; // Car angle in degrees
 
     public int getNrDoors(){
         // Getter for nrDoors
@@ -26,6 +26,10 @@ public class Car implements Movable {
     public double getCurrentSpeed(){
         // Getter for currentSpeed
         return currentSpeed;
+    }
+
+    public void setCurrentSpeed(double speed) {
+        currentSpeed = speed;
     }
 
     public Color getColor(){
@@ -114,8 +118,10 @@ public class Car implements Movable {
 
 
     public void move() {
-        xCoord = Math.sin(carAngle)*currentSpeed;
-        yCoord = Math.cos(carAngle)*currentSpeed;
+
+        double angle = Math.PI*carAngle/180;
+        xCoord += Math.cos(angle)*currentSpeed;
+        yCoord += Math.sin(angle)*currentSpeed;
     }
 
     public void turnLeft() {
@@ -126,11 +132,7 @@ public class Car implements Movable {
         carAngle = (carAngle - 10)%360;
     }
 
-    public double getxCoord() {
-        return xCoord;
-    }
+    public double getxCoord() { return xCoord; }
 
-    public double getyCoord() {
-        return yCoord;
-    }
+    public double getyCoord() {return yCoord;}
 }

@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 
 public class Car implements Movable {
 
@@ -10,9 +12,12 @@ public class Car implements Movable {
     protected Color color; // Color of the car
     protected String modelName; // The car model name
 
-    protected double xCoord = 0; // Car x coordinate
-    protected double yCoord = 0; // Car y coordinate
-    protected int carAngle = 90; // Car angle in degrees
+    protected Point coord = new Point();
+    protected int carAngle = 0; // Car angle in degrees
+
+    protected BufferedImage image;
+
+    protected boolean isLoaded = false;
 
     public int getNrDoors(){
         // Getter for nrDoors
@@ -120,19 +125,27 @@ public class Car implements Movable {
     public void move() {
 
         double angle = Math.PI*carAngle/180;
-        xCoord += Math.cos(angle)*currentSpeed;
-        yCoord += Math.sin(angle)*currentSpeed;
+        coord.x += Math.cos(angle)*currentSpeed;
+        coord.y += Math.sin(angle)*currentSpeed;
     }
 
     public void turnLeft() {
-        carAngle = (carAngle + 10)%360;
+        carAngle = (carAngle + 90)%360;
     }
 
     public void turnRight() {
-        carAngle = (carAngle - 10)%360;
+        carAngle = (carAngle - 90)%360;
     }
 
-    public double getxCoord() { return xCoord; }
+    public double getxCoord() { return coord.x; }
 
-    public double getyCoord() {return yCoord;}
+    public double getyCoord() {return coord.y;}
+
+    public void setCoord(int x, int y) {
+        coord.x = x;
+        coord.y = y;
+    }
+
+    public void setCarLoaded(boolean bool) {isLoaded = bool;}
+    public boolean getIsLoaded() {return isLoaded;}
 }

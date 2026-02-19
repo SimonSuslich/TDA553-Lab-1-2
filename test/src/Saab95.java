@@ -1,4 +1,6 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 
 public class Saab95 extends Car {
 
@@ -9,6 +11,12 @@ public class Saab95 extends Car {
         turboOn = false;
         modelName = "Saab95";
         stopEngine();
+        try {
+            image = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Saab95.jpg"));
+        } catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     @Override

@@ -1,4 +1,6 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 
 public class Volvo240 extends Car {
     private double trimFactor;
@@ -10,6 +12,12 @@ public class Volvo240 extends Car {
         modelName = "Volvo240";
         trimFactor = 1.25;
         stopEngine();
+        try {
+            image = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/Volvo240.jpg"));
+        } catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     @Override

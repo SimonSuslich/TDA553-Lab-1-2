@@ -23,18 +23,24 @@ public class CarController {
     CarView frame;
     // A list of cars, modify if needed
     ArrayList<Car> cars = new ArrayList<>();
+    AutoShop<Volvo240> volvo240AutoShop = new AutoShop<Volvo240>(2);
 
     //methods:
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         // Instance of this class
         CarController cc = new CarController();
 
         cc.cars.add(new Volvo240());
-        //cc.cars.add(new Scania());
+        cc.cars.add(new Volvo240());
+        cc.cars.add(new Volvo240());
+        cc.cars.add(new Volvo240());
 
+
+        cc.cars.add(new Scania());
+        System.out.println(volvo240AutoShop);
         // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc);
+        cc.frame = new CarView("CarSim 1.0", cc, cc.cars, volvo240AutoShop);
 
         // Start the timer
         cc.timer.start();
@@ -45,21 +51,27 @@ public class CarController {
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-           for (Car car : cars) {
-                int x = (int) Math.round(car.getxCoord());
-                int y = (int) Math.round(car.getyCoord());
-                if (!checkHitWall(car)) {
-                    car.move();
-                    x = (int) Math.round(car.getxCoord());
-                    y = (int) Math.round(car.getyCoord());
-                    System.out.println("Yo");
-                    frame.drawPanel.moveit(x, y);
-               } else {
-                    car.setCurrentSpeed(0);
-                    System.out.println("No");
+
+            for (Car car : cars) {
+                if (checkHitWall(car)) {
+                    car.carAngle = (car.carAngle + 180)%360;
                 }
-                System.out.println("Coords: "+x + "," + y);
-                System.out.println("Speed: "+car.getCurrentSpeed());
+               car.move();
+               int x = (int) Math.round(car.getxCoord());
+               int y = (int) Math.round(car.getyCoord());
+               if (atAutoShopColide(car)) {
+                   if (car instanceof Volvo240) {
+                        volvo240AutoShop.loadCar((Volvo240) car);
+                        car.stopEngine();
+                        //.out.println(" autoshop cars: "+volvo240AutoShop.getCarsStorage()  );
+
+                        //System.out.println(volvo240AutoShop + "--- "+ frame.autoShop);
+                        System.out.println(volvo240AutoShop.getCarsStorage());
+
+                   }
+               }
+
+                //System.out.println("Car model " +car.modelName);
 
                 // repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
@@ -119,33 +131,45 @@ public class CarController {
     }
 
     boolean checkHitWall(Car car) {
-        int carWidth = frame.drawPanel.volvoImage.getWidth();
-        int carHeight = frame.drawPanel.volvoImage.getHeight();
+        int carWidth = car.image.getWidth();
+        int carHeight = car.image.getHeight();
         Dimension windowSize = frame.drawPanel.getSize();
 
 
         if (windowSize.height < car.getyCoord()+carHeight) {
-            System.out.println(windowSize.height + "--- " + car.getyCoord() + carHeight + " Y coord over window");
             return true;
         }
 
         if (windowSize.width < car.getxCoord()+carWidth) {
-            System.out.println(windowSize.width + "--- " + car.getxCoord() + carWidth + " X coord over window");
             return true;
         }
 
         if (0 > car.getyCoord()) {
-            System.out.println(0 + "--- " + car.getyCoord() + " x Coord lower than 0");
             return true;
         }
         if (0 > car.getxCoord()) {
-            System.out.println(0 + "--- " + car.getxCoord() + " y coord lower than 0");
             return true;
         }
         return false;
     }
-//Chech hit wall fast för autoshop
-    void atAutoShop(Car car){
-        //int autoShopWidth =
+
+    boolean atAutoShopColide(Car car){
+        int carWidth = car.image.getWidth();
+        int carHeight = car.image.getHeight();
+        Point autoShopSize = frame.drawPanel.volvoWorkshopPoint;
+        int autoShopWidth = frame.drawPanel.volvoWorkshopImage.getWidth();
+        int autoShopHeight = frame.drawPanel.volvoWorkshopImage.getHeight();
+
+
+
+
+
+        if ((autoShopSize.y < car.getyCoord()+carHeight && autoShopSize.y +autoShopHeight > car.getyCoord()+carHeight) ||  (autoShopSize.y < car.getyCoord() && autoShopSize.y +autoShopHeight > car.getyCoord())) {
+            if ((autoShopSize.x < car.getxCoord()+carWidth && autoShopSize.x +autoShopWidth > car.getxCoord()+carWidth) ||  (autoShopSize.x < car.getxCoord() && autoShopSize.x +autoShopWidth > car.getxCoord())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

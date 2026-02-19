@@ -36,14 +36,15 @@ public class Biltransport extends BigCar implements Loadable, HasAngle{
         //Checks if ramp is down
         if (rampAngle==0) {
             //Checks if distance is 5 or less
-            if (Point.distance(car.xCoord, car.yCoord, this.xCoord, this.yCoord) <= 5) {
+            if (Point.distance(car.coord.x, car.coord.y, this.coord.x, this.coord.y) <= 5) {
                 //Checks if there is storage for car
                 if (carsStorage.size() < flakCapacity) {
                     //Checks if car is instance of biltransport
                     if (!(car instanceof BigCar)) {
                         carsStorage.add(car);
-                        car.xCoord = this.xCoord;
-                        car.yCoord = this.yCoord;
+                        car.coord.x = this.coord.x;
+                        car.coord.y = this.coord.y;
+                        car.setCarLoaded(true);
                     }
                 }
             }
@@ -56,8 +57,9 @@ public class Biltransport extends BigCar implements Loadable, HasAngle{
             if (!carsStorage.isEmpty()) {
                 Car car = carsStorage.getLast();
                 carsStorage.removeLast();
-                car.xCoord = this.xCoord + 5;
-                car.yCoord = this.yCoord;
+                car.coord.x = this.coord.x + 5;
+                car.coord.y = this.coord.y;
+                car.setCarLoaded(false);
                 return car;
             }
         }
@@ -68,8 +70,8 @@ public class Biltransport extends BigCar implements Loadable, HasAngle{
     public void move()  {
         super.move();
         for (Car car: carsStorage) {
-            car.xCoord = this.xCoord;
-            car.yCoord = this.yCoord;
+            car.coord.x = this.coord.x;
+            car.coord.y = this.coord.y;
         }
     }
 

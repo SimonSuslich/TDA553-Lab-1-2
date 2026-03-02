@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-public class Car implements Movable {
+public abstract class Car implements Movable {
 
     protected boolean turboOn; // Turbo on/off
     protected int nrDoors; // Number of doors on the car

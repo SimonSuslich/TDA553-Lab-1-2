@@ -48,7 +48,6 @@ public class DrawPanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //System.out.println(autoShop.getCarsStorage());
         for (Car car: cars) {
             if (!car.getIsLoaded()) {
                 g.drawImage(car.image, car.coord.x, car.coord.y, null);
